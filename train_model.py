@@ -11,7 +11,7 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 file_root = "C:\\GitHub\\emotion_to_emoji"
 
 # set up location of photos
-data_dir = f"{file_root}\\intake"
+data_dir = f"{file_root}\\intake\\training"
 
 # create a dataset object for training and val with the images in the data_dir directory
 image_ds = tf.keras.preprocessing.image_dataset_from_directory(
@@ -37,8 +37,8 @@ model = keras.Sequential([
     keras.layers.Rescaling(1./255, input_shape = (224, 224, 1)),
     keras.layers.Conv2D(32, (3, 3), padding = "same", activation = "relu"),
     keras.layers.MaxPooling2D(pool_size = (2, 2)),
-    # keras.layers.Conv2D(64, (3, 3), padding = "same", activation = "relu"),
-    # keras.layers.MaxPooling2D(pool_size = (2, 2)),
+    keras.layers.Conv2D(64, (3, 3), padding = "same", activation = "relu"),
+    keras.layers.MaxPooling2D(pool_size = (2, 2)),
     keras.layers.Flatten(),
     keras.layers.Dense(512, activation = "relu"),
     keras.layers.Dense(8, activation = "softmax")
