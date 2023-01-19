@@ -1,4 +1,5 @@
 import cv2
+import matplotlib.pyplot as plt
 
 class findFace:
     # create class for identifying faces and cropping them out of images
@@ -22,4 +23,14 @@ class findFace:
             face = gray[y:y+h, x:x+w]
 
         # save the cropped face
-        cv2.imwrite(f"{root}\\working\\cropped_face.jpg", face)
+        try:
+            cv2.imwrite(f"{root}\\working\\cropped_face.jpg", face)
+
+            # print the found face
+            plt.imshow(face, cmap = "gray")
+            plt.title("Found Face")
+            plt.axis("off")
+            plt.show()
+
+        except: 
+            print("\nERROR: No face identified.")        
