@@ -40,15 +40,12 @@ model = keras.Sequential([
     keras.layers.Conv2D(64, (3, 3), padding = "same", activation = "relu"),
     keras.layers.MaxPooling2D(pool_size = (2, 2)),
     keras.layers.Flatten(),
-    keras.layers.Dense(512, activation = "relu"),
+    keras.layers.Dense(512, kernel_regularizer = keras.regularizers.l2(0.01), bias_regularizer = keras.regularizers.l2(0.01), activation = "relu"),
     keras.layers.Dense(8, activation = "softmax")
 ])
 
 # compile the model
-optimizer = keras.optimizers.Adam(
-    learning_rate = 0.001, beta_1 = 0.9, beta_2 = 0.999, epsilon = 1e-07, amsgrad = False, l2 = 0.001
-)
-model.compile(optimizer = optimizer, loss = "sparse_categorical_crossentropy", metrics = ["accuracy"])
+model.compile(optimizer = "adam", loss = "sparse_categorical_crossentropy", metrics = ["accuracy"])
 
 # train the model
 es_cb = keras.callbacks.EarlyStopping(monitor = "val_loss", patience = 5)
