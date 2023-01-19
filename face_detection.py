@@ -16,7 +16,7 @@ class findFace:
         face_cascade = cv2.CascadeClassifier(f"{root}\\intake\\haarcascade_frontalface_default.xml")
 
         # detect faces in the image
-        faces = face_cascade.detectMultiScale(gray, scaleFactor = 1.3, minNeighbors = 5, flags = cv2.CASCADE_SCALE_IMAGE | cv2.CASCADE_FIND_BIGGEST_OBJECT)
+        faces = face_cascade.detectMultiScale(gray, scaleFactor = 1.01, minNeighbors = 100, flags = cv2.CASCADE_SCALE_IMAGE | cv2.CASCADE_FIND_BIGGEST_OBJECT)
 
         # crop the face from the image
         for (x, y, w, h) in faces:

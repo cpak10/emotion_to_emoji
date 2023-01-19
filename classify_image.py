@@ -7,4 +7,4 @@ file_root = "C:\\GitHub\\emotion_to_emoji"
 
 # load face finder
 face_finder = findFace()
-face_finder.save_face(file_path = f"{file_root}\\intake\\bzrk2.jpg", root = file_root)
+face_finder.save_face(file_path = f"{file_root}\\intake\\identify\\two.jpg", root = file_root)
