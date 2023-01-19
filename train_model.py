@@ -32,15 +32,33 @@ for images, labels in image_ds.take(1):
         plt.axis("off")
 plt.show()
 
+# augment data
+data_augmentation = keras.Sequential(
+  [
+    keras.layers.RandomFlip(
+        "horizontal",
+        input_shape = (
+            224, 224, 1
+        )
+    ),
+    keras.layers.RandomRotation(0.1),
+    keras.layers.RandomZoom(0.1),
+  ]
+)
+
 # set up the model
 model = keras.Sequential([
     keras.layers.Rescaling(1./255, input_shape = (224, 224, 1)),
-    keras.layers.Conv2D(32, (3, 3), padding = "same", activation = "relu"),
-    keras.layers.MaxPooling2D(pool_size = (2, 2)),
-    keras.layers.Conv2D(64, (3, 3), padding = "same", activation = "relu"),
-    keras.layers.MaxPooling2D(pool_size = (2, 2)),
+    data_augmentation,
+    keras.layers.Conv2D(16, 3, padding = "same", activation = "relu"),
+    keras.layers.MaxPooling2D(),
+    keras.layers.Conv2D(32, 3, padding = "same", activation = "relu"),
+    keras.layers.MaxPooling2D(),
+    keras.layers.Conv2D(64, 3, padding = "same", activation = "relu"),
+    keras.layers.MaxPooling2D(),
+    keras.layers.Dropout(0.2),
     keras.layers.Flatten(),
-    keras.layers.Dense(512, kernel_regularizer = keras.regularizers.l2(0.01), bias_regularizer = keras.regularizers.l2(0.01), activation = "relu"),
+    keras.layers.Dense(128, kernel_regularizer = keras.regularizers.l2(0.01), bias_regularizer = keras.regularizers.l2(0.01), activation = "relu"),
     keras.layers.Dense(8, activation = "softmax")
 ])
 
@@ -53,7 +71,7 @@ model.fit(image_ds, epochs = 100, validation_data = val_ds, callbacks = [es_cb])
 
 # evaluate the model
 test_loss, test_acc = model.evaluate(val_ds)
-print(f"\nNOTE: Test accuracy: {test_acc}%")
+print(f"\nNOTE: Test accuracy: {int(test_acc * 100)}%")
 
 # save model
 model.save(f"{file_root}\\working\\model_sequential")
